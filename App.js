@@ -1,24 +1,22 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+//import { /*StyleSheet,*/ Text, View } from 'react-native';
+import Routes from './src/routes';
 
 export default function App() {
   return (
+      <Routes />
+  );
+}
+
+/*
+export default function App() {
+  return (
     <View style={styles.container}>
-      <Text style={styles.title}>Hello Fal!</Text>
-      <Text style={styles.title}>Hello Fal!</Text>
-      <Text style={styles.title}>Hello Fal!</Text>
-      <Text style={styles.title}>Hello Fal!</Text>
-      <Text style={styles.title}>Hello Fal!</Text>
-      <Text style={styles.title}>Hello Fal!</Text>
-      <Text style={styles.title}>Hello Fal!</Text>
-      <Text style={styles.title}>Hello Fal!</Text>
-      <Text style={styles.title}>Hello Fal!</Text>
-      <Text style={styles.title}>Hello Fal!</Text>
-      <Text style={styles.title}>Hello Fal!</Text>
-      <Text style={styles.title}>Hello Fal!</Text>
+      <Text style={styles.title}>Oi Fal!</Text>
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -34,3 +32,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   }
 });
+*/
