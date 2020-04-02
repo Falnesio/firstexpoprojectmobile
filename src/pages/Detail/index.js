@@ -14,22 +14,32 @@ export default function Detail() {
 
     const incident = route.params.incident;
 
-    const message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
+    //const message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
+
+    const message = `Olá ${incident.name}, estou entrando em contato pois gostaria de ajudar no caso "${incident.title}" com o valor de ${Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL'}).format(incident.value)}`;
 
     function navigateBack() {
         navigation.goBack()
     }
 
-    function sendMail() {
+/*    function sendMail() {
         MailCompose.composeAsync({
             subject: 'Herói do Caso: Nome do Caso',
             recipients: ['falnesio.ghander@economia.ufjf.br'],
             body: message,
         })
+    }*/
+
+    function sendMail() {
+        MailCompose.composeAsync({
+            subject: `Herói do Caso: ${incident.title}`,
+            recipients: [incident.email],
+            body: message,
+        })
     }
 
     function sendWhatsapp() {
-        Linking.openURL(`whatsapp://send?phone=33920005046Gtext=${message}`);
+        Linking.openURL(`whatsapp://send?phone=${incident.whatsapp}&text=${message}`);
     }
 
     return (
