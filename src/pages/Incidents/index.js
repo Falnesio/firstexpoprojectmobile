@@ -8,23 +8,40 @@ import logoImg from '../../assets/logo.png';
 import styles from "./styles";
 
 import api from '../../services/api';
-import setValueForStyles from "react-native-web/dist/vendor/react-dom/setValueForStyles";
 
 export default function Incidents() {
     const [incidents, setIncidents] = useState([]);
     const [total, setTotal] = useState(0);
 
+    const [page, setPage] = useState(1); // para paginação
+    const [loading, setLoading] = useState(false); // para impedir chamar a mesma informação inúmeras vezes
+
     const navigation = useNavigation();
 
     function navigateToDetail(incident) {
-        navigation.navigate('Detail', {incident});
+        navigation.navigate('Detail', { incident });
     }
 
     async function loadIncidents(){
-        const response = await api.get('incidents');
+        if (loading) {
+            return;
+        }
 
-        setIncidents(response.data);
+        if (total > 0 && incidents.length === total) {
+            return;
+        }
+
+        setLoading(true);
+
+        const response = await api.get('incidents', { //'incidents?page${page}'
+            params: { page }
+        });
+
+        //setIncidents(response.data);  isso simplesmente trocaria os dados na paginação
+        setIncidents([...incidents, ...response.data]);
         setTotal(response.headers['x-total-count']);
+        setPage(page + 1);
+        setLoading(false);
     }
 
     useEffect(() => {
@@ -47,7 +64,9 @@ export default function Incidents() {
                 data={incidents} //data={[1, 2, 3, 4, 5]}
                 style={styles.incidentList}
                 keyExtractor={incident => String(incident.id)}
-                showsVerticalScrollIndicator={false}
+                //showsVerticalScrollIndicator={false} //barra lateral
+                onEndReached={loadIncidents}
+                onEndReachedThreshold={0.2}
                 renderItem={({ item : incident}) => (
                     <View style={styles.incident}>
                       <Text style={styles.incidentProperty}>ONG:</Text>
